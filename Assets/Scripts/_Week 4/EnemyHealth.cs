@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -59,32 +59,50 @@ public class EnemyHealth : MonoBehaviour
         // TODO: Check if spriteRenderer is null.
         // If it is, get the SpriteRenderer component from this GameObject.
 
-
+        if (SpriteRenderer == null
+       {
+        spriteRenderer = GetComponent <SpriteRenderer>();
+       })
 
         // TODO: Check that spriteRenderer is not null.
         // If it exists, store its current colour in originalColor.
 
-
+        if (SpriteRenderer != null)
+        {
+            originalColor = spriteRenderer.Color
+        }
 
         // TODO: Check if audioSource is null.
         // If it is, get the AudioSource component from this GameObject.
 
-
+        if (audioSource == null)
+        {
+            audioSource = GetComponent <audioSource>();
+        }
 
         // TODO: Check if playerExperience is null.
         // If it is, find the PlayerExperience component in the scene.
 
-
+        if (playerExperience == null)
+        {
+         playerExperience FindAnyObjectByType<playerExperience>();   
+        }
 
         // TODO: Check if playerMoney is null.
         // If it is, find the PlayerMoney component in the scene.
 
-
+        if (playerMoney == null)
+        {
+            playerMoney FindAnyObjectByType<playerMoney>();
+        }
 
         // TODO: Check if playerKills is null.
         // If it is, find the PlayerKills component in the scene.
 
-
+        if (playerKills == null)
+        {
+            playerKills FindAnyObjectByType<playerKills>();
+        }
     }
 
     private void Start()
@@ -129,26 +147,35 @@ public class EnemyHealth : MonoBehaviour
 
         // TODO: Subtract amount from the enemy's current health.
 
-
+        enemyHealth -= amount;
 
         // TODO: Check whether currentHP is below 0.
         // If it is, set currentHP to 0.
 
-
+        if (currentHP < 0)
+        {
+            currentHP = 0;
+        }
 
         // TODO: If debug logs are enabled,
         // print the damage taken and current health.
 
+        if (showDebugLogs == true)
+
+        Debug.Log ("damageAmount: Damage Taken" + currentHP);
 
 
         // TODO: Call the function that plays the enemy's hit feedback.
 
-
+        PlayHitFeedback();
 
         // TODO: Check whether the enemy's current health is 0 or less.
         // If it is, call the Die function.
 
-
+        if (currentHP < 0)
+        {
+            Die();
+        }
     }
 
     private void PlayHitFeedback()
@@ -162,7 +189,10 @@ public class EnemyHealth : MonoBehaviour
         // TODO: Check that both audioSource and hitSound are not null.
         // If they exist, play hitSound using the AudioSource.
 
-
+        if (audioSource != null && hitSound != null)
+        {
+            audioSource.PlayOneShot(hitSound);
+        }
     }
 
     private IEnumerator FlashOnHit()
@@ -175,14 +205,20 @@ public class EnemyHealth : MonoBehaviour
 
         // TODO: Change the SpriteRenderer's colour to the hit flash colour.
 
-
+        if (UseHitFlash == true && spriteRenderer != null)
+        {
+            spriteRenderer.color = hitFlashColor;
+        }
 
         yield return new WaitForSeconds(flashDuration);
 
         // TODO: Check that spriteRenderer is not null.
         // If it exists, change its colour back to originalColor.
 
-
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = originalColor;
+        }
 
         // Allow the hit flash to be started again.
         flashRoutine = null;
@@ -193,28 +229,34 @@ public class EnemyHealth : MonoBehaviour
         // TODO: Check whether the enemy is already dead.
         // If it is, stop the function.
 
-
+        if isdead == true
+        {
+            return;
+        }
 
         // TODO: Set isDead to true.
 
-
+        isDead = true;
 
         // TODO: If debug logs are enabled,
         // print that the enemy has died.
 
-
+        if (showDebugLogs == true);
+        {
+            Debug.Log ("enemy " + name " Has died");
+        }
 
         // TODO: Call the function that awards the player's rewards.
 
-
+        AwardRewards();
 
         // TODO: Call the function that drops coins.
 
-
+        coinsToDrop();
 
         // TODO: Call the function that plays the death sound.
 
-
+        deathsound();
 
         // Invoke any functions connected to the On Die event in the Inspector.
         // We will look at how UnityEvents work in more detail in later weeks.
@@ -239,12 +281,18 @@ public class EnemyHealth : MonoBehaviour
         // TODO: Check that playerMoney is not null.
         // If it exists, call AddMoney and give it moneyReward.
 
-
+        if (playerMoney != null)
+        {
+            playerMoney.AddMoney(moneyReward);
+        }
 
         // TODO: Check that playerKills is not null.
         // If it exists, call AddKills and give it killReward.
 
-
+        if (playerKills != null)
+        {
+            playerKills.AddKills(killReward);
+        }
     }
 
     private void DropCoins()
@@ -295,6 +343,9 @@ public class EnemyHealth : MonoBehaviour
         // TODO: Check that both audioSource and deathSound are not null.
         // If they exist, play deathSound using the AudioSource.
 
-
+        if (audioSource != null && deathsound != null)
+        {
+            audioSource.PlayOneShot(deathsound);
+        }
     }
 }
